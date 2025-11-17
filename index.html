@@ -15,7 +15,7 @@
 <body class="font-sans bg-gray-100">
 
     <!-- form -->
-    <section class="fixed inset-0 z-50 flex items-center justify-center bg-black/50" id="modal">
+    <section class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50" id="modal">
         <div class="w-full sm:max-w-md modal-card bg-white rounded-2xl p-6 shadow-2xl mx-4">
             <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-semibold text-green-600" id="title-form">Create Employee</h3>
@@ -55,11 +55,11 @@
     <div class="flex min-h-screen">
 
         <aside class="bg-neutral-100 w-1/4 p-4 flex flex-col">
-            <button class="bg-green-500 p-3 rounded-md text-white mb-6">Add New Worker</button>
+            <button class="bg-green-500 p-3 rounded-md text-white mb-6" id="opneBtn">Add New Worker</button>
         </aside>
 
 
-        <mazin class="relative bg-[url('/img/workspace.jpg')] bg-center bg-cover min-h-screen w-full">
+        <main class="relative bg-[url('/img/workspace.jpg')] bg-center bg-cover min-h-screen w-full">
             <div class="grid grid-cols-[37%_18%_22%_22%] grid-rows-[35%_31%_32.5%] gap-2 absolute top-0 left-0 w-full h-full">
                    <div class="bg-red-600/60"></div>
                     <div class=""></div>
@@ -77,9 +77,10 @@
                     <div class="bg-yellow-400/60"></div>
             </div>
 
-        </mazin>
+        </main>
 
     </div>
 
+    <script src="./index.js"></script>
 </body>
 </html>
