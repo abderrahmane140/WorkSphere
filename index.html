@@ -18,17 +18,19 @@
     <section class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50" id="modal">
         <div class="w-full sm:max-w-md modal-card bg-white rounded-2xl p-6 shadow-2xl mx-4">
             <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold text-green-600" id="title-form">Create Employee</h3>
+            <h3 class="text-lg font-semibold text-green-600" id="title-form">Create Worker</h3>
             <button id="closeBtn" class="text-slate-400 hover:text-slate-600 text-2xl">&times;</button>
             </div>
+
+            
             <form class="space-y-3" id="form">
                 <div class="flex gap-2">
                     <input class="w-full rounded border border-slate-100 px-3 py-2" placeholder="Full Name" type="text" id="name" />
                     <input class="w-full rounded border border-slate-100 px-3 py-2" placeholder="Role" type="text" id="role" />
                 </div>
-                <input class="w-full rounded border border-slate-100 px-3 py-2" placeholder="image" type="text" id="image" />
+                <input class="w-full rounded border border-slate-100 px-3 py-2" placeholder="image" type="text" id="img" />
                 <div>
-                    <img class="bg-neutral-100 rounded-full w-10 h-10" src="" alt="profile">
+                    <img class="bg-neutral-100 rounded-full w-10 h-10" src="" id="profile" alt="profile">
                 </div>
                 <div>
                     <h3 class="text-lg font-bold mb-4">Professional Experience</h3>
@@ -55,6 +57,8 @@
     <div class="flex min-h-screen">
 
         <aside class="bg-neutral-100 w-1/4 p-4 flex flex-col">
+            <div id="UnassignedStaff">
+            </div>
             <button class="bg-green-500 p-3 rounded-md text-white mb-6" id="opneBtn">Add New Worker</button>
         </aside>
 
