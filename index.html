@@ -25,16 +25,27 @@
             
             <form class="space-y-3" id="form">
                 <div class="flex gap-2">
-                    <input class="w-full rounded border border-slate-100 px-3 py-2" placeholder="Full Name" type="text" id="name" />
-                    <input class="w-full rounded border border-slate-100 px-3 py-2" placeholder="Role" type="text" id="role" />
+                    <div>
+                        <input class="w-full rounded border border-slate-100 px-3 py-2" placeholder="Full Name" type="text" id="fullName" />
+                        <span class="text-red-600 text-sm hidden" id="fullNameError"></span>
+                    </div>
+                    <div>
+                        <input class="w-full rounded border border-slate-100 px-3 py-2" placeholder="Role" type="text" id="role" />
+                        <span class="text-red-600 text-sm hidden" id="roleError"></span>
+                    </div>
                 </div>
+
                 <input class="w-full rounded border border-slate-100 px-3 py-2" placeholder="image" type="text" id="img" />
                 <div>
                     <img class="bg-neutral-100 rounded-full w-10 h-10" src="" id="profile" alt="profile">
                 </div>
+
                 <div>
-                    <h3 class="text-lg font-bold mb-4">Professional Experience</h3>
-                    <div>
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-bold ">Professional Experience</h3>
+                        <button class="" id="addExp"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                    <!-- <div>
                         <label>Start date</label>
                         <input class="w-full rounded border border-slate-100 px-3 py-2 mb-2" type="date" id="start-date">
                         <label>End date</label>
@@ -44,10 +55,19 @@
                             <input class="w-full rounded border border-slate-100 px-3 py-2 mb-2"  type="text" placeholder="Role" id="experience-role">
                         </div>
                         <button class="p-2 bg-green-500 w-full rounded-md text-white font-bold">Add</button>
-                    </div>
+                    </div> -->
                 </div>
-                <input class="w-full rounded border border-slate-100 px-3 py-2" placeholder="Email" type="email" id="email" />
-                <input class="w-full rounded border border-slate-100 px-3 py-2" placeholder="Phone" type="tel" id="phone" />
+
+                <div>
+                    <input class="w-full rounded border border-slate-100 px-3 py-2" placeholder="Email" type="email" id="email" />
+                    <span class="text-red-600 text-sm hidden" id="emailError"></span>
+
+                </div>
+                <div>
+                    <input class="w-full rounded border border-slate-100 px-3 py-2" placeholder="Phone" type="tel" id="phone" />
+                    <span class="text-red-600 text-sm hidden" id="phoneError"></span>
+
+                </div>
                 <button type="submit" class="w-full bg-sky-600 text-white rounded px-3 py-2">Create</button>
             </form>
         </div>

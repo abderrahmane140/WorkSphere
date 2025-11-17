@@ -6,7 +6,7 @@ const form = document.querySelector('#form')
 const worker = []
 
 //form data
-const fullName = document.getElementById('name')
+const fullName = document.getElementById('fullName')
 const role = document.querySelector('#role')
 const image = document.querySelector('#img')
 const email = document.querySelector('#email')
@@ -18,16 +18,26 @@ const compnayName = document.querySelector('#compnay-name')
 const expRole = document.querySelector('#experience-role')
 
 
- 
+//errors
 
+const fullNameError = document.getElementById('fullNameError')
+const roleError = document.getElementById('roleError')
+const emailError = document.getElementById('emailError')
+const phoneError = document.getElementById('phoneError')
+
+
+//exp 
+
+const expBtn = document.getElementById('addExp')
 
     
-
+//opne the model
 const openModel = () => {
     model.classList.remove('hidden')
     model.classList.add('flex')
 }
 
+//close model
 const closeModel = () => {
     model.classList.remove('flex')
     model.classList.add('hidden')
@@ -46,28 +56,6 @@ document.querySelector('#img').addEventListener('input', () => {
     profileImg.src = image.value;
 });
 
-//submit the form 
-form.addEventListener('submit' , (e) =>{
-    e.preventDefault()
-
-    worker.push(
-        {
-            name: fullName.value,
-            role: role.value,
-            image : image.value,
-            email: email.value,
-            phone: phone.value,
-            startDate: startDate.value,
-            endDate: endDate.value,
-            compnayName: compnayName.value,
-            experienceRole: expRole.value
-        }
-    )
-
-    console.log(worker);
-    randerUnassignedStaff()
-    
-})
 
 
 
@@ -86,3 +74,87 @@ const randerUnassignedStaff = () => {
         })
     }
 }
+
+
+//form validation 
+
+function showError(element, message){
+    element.textContent = message;
+    element.style.display = 'block'
+}
+
+function hideError(element){
+    element.textContent = "";
+    element.style.display = 'none'
+}
+
+function validateEmail(email){
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+}
+
+const validate = (e) => {
+    e.preventDefault()
+    let isValide = true;
+
+    //name
+    if(fullName.value.trim() == "") {
+        showError(fullNameError, "Name can't be empty")
+        isValide = false;
+    }else if (fullName.value.length < 8){
+        showError(fullNameError, "name must be at least 8 character")
+        isValide = false
+    }else{
+        hideError(fullNameError)
+    }
+
+    //role
+    if(role.value.trim() == "") {
+        showError(roleError, "the Role can't be empty")
+        isValide = false;
+    }else{
+        hideError(role)
+    }
+
+    //email
+    if(email.value.trim() == ""){
+        showError(emailError, "Email cannot be empth")
+        isValide = false
+    }else if(!validateEmail(email.value)){
+        showError(emailError, "Enter a valide email")
+    }else{
+        hideError(emailError)
+    }
+
+    //phone
+    if(phone.value.trim() == ""){
+        showError(phoneError, "Phone number cannot be empty.")
+        isValide = false
+    }else if(!/^[+]?[0-9\s-]{6,15}$/.test(phone.value)){
+        showError(phoneError, "Enter a valide number")
+        isValide = false
+    }else{
+        hideError(phoneError)
+    }
+
+    if(isValide){
+        worker.push(
+            {
+                name: fullName.value,
+                role: role.value,
+                image : image.value,
+                email: email.value,
+                phone: phone.value,
+                startDate: startDate.value,
+                endDate: endDate.value,
+                compnayName: compnayName.value,
+                experienceRole: expRole.value
+            }
+        )
+
+        randerUnassignedStaff()
+    }
+}
+
+
+//submit the form 
+form.addEventListener('submit', validate);
