@@ -11,6 +11,33 @@
     html,body{
         overflow: hidden;
     }
+    .experience-item {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        position: relative;
+        transition: all 0.3s ease;
+    }
+
+    .experience-item.collapsed {
+        height: auto;
+        padding: 5px 10px;
+        overflow: hidden;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .removeExpBtn {
+        background-color: red;
+        color: white;
+        border: none;
+        padding: 2px 6px;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
 </style>
 <body class="font-sans bg-gray-100">
 
@@ -40,22 +67,14 @@
                     <img class="bg-neutral-100 rounded-full w-10 h-10" src="" id="profile" alt="profile">
                 </div>
 
-                <div>
+                <div >
                     <div class="flex justify-between items-center">
                         <h3 class="text-lg font-bold ">Professional Experience</h3>
-                        <button class="" id="addExp"><i class="fa-solid fa-plus"></i></button>
+                        <button class="" type="button" id="addExp"><i class="fa-solid fa-plus"></i></button>
                     </div>
-                    <!-- <div>
-                        <label>Start date</label>
-                        <input class="w-full rounded border border-slate-100 px-3 py-2 mb-2" type="date" id="start-date">
-                        <label>End date</label>
-                        <input class="w-full rounded border border-slate-100 px-3 py-2 mb-2" type="date" id="end-date">
-                        <div class="flex gap-2">
-                            <input class="w-full rounded border border-slate-100 px-3 py-2 mb-2" type="text" placeholder="Company name" id="compnay-name">
-                            <input class="w-full rounded border border-slate-100 px-3 py-2 mb-2"  type="text" placeholder="Role" id="experience-role">
-                        </div>
-                        <button class="p-2 bg-green-500 w-full rounded-md text-white font-bold">Add</button>
-                    </div> -->
+                    <div id="experience">
+                        
+                    </div>
                 </div>
 
                 <div>
