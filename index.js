@@ -211,6 +211,7 @@ const validate = (e) => {
             image: image.value,
             email: email.value,
             phone: phone.value,
+            assignedZone:null,
             experiences: []
         };
 
