@@ -50,7 +50,7 @@ document.querySelector('#img').addEventListener('input', () => {
 
 //render the experience
 expBtn.addEventListener('click', () => {
-    
+
     experiences.forEach(e => {
         if(!e.classList.contains('hidden')){
             e.classList.add('hidden')
@@ -87,15 +87,18 @@ expBtn.addEventListener('click', () => {
 //render the card of the worker top of the button 
 const randerUnassignedStaff = () => {
     const UnassignedStaffContainer = document.getElementById('UnassignedStaff');
-    UnassignedStaffContainer.innerHTML = '';
+    UnassignedStaffContainer.innerHTML = '';  
     workers.forEach(Worker => {
         const div = document.createElement('div');
-        div.classList = 'flex justify-between items-center rounded-md border-1 p-3 mb-4';
+
         div.innerHTML = `
+        <div class="flex justify-between items-center rounded-md border-1 p-3 mb-4">
             <span>${Worker.name}</span>
-            <img src=${Worker.image} alt ="image" class="w-10 h-10 rounded-full">
+            <img src=${Worker.image} alt="image" class="w-10 h-10 rounded-full">
+        </div>
         `;
         UnassignedStaffContainer.appendChild(div);
+        div.addEventListener("click", () => displayWorker(Worker));
     });
 };
 
@@ -213,7 +216,7 @@ const validate = (e) => {
 
         // Save experiences
         for(const expDiv of experiences){
-             const startDate = expDiv.querySelector('.start-date').value;
+            const startDate = expDiv.querySelector('.start-date').value;
             const endDate = expDiv.querySelector('.end-date').value;
             const companyName = expDiv.querySelector('.company-name').value;
             const experienceRole = expDiv.querySelector('.experience-role').value
@@ -234,3 +237,58 @@ const validate = (e) => {
 
 //submit the form 
 form.addEventListener('submit', validate);
+
+
+
+const displayWorker = (worker) => {
+    const div = document.createElement('div')
+    div.innerHTML = `  
+    <section class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 displayWorker" >
+        <div class="w-full sm:max-w-md modal-card bg-white rounded-2xl p-6 shadow-2xl mx-4">
+            <div class="flex justify-end">
+                <button id="closeDisplayBtn" class="text-slate-400 hover:text-slate-600 text-2xl">&times;</button>
+            </div>
+            <div class="flex items-center justify-center">
+                <img  
+                class="w-30 h-30 rounded-full" 
+                src="${worker.image}" 
+                alt="${worker.name}">
+            </div>
+            <div class="mt-4 flex justify-between bg-neutral-100 p-2 rounded-sm">
+                <span>Name</span>
+                <p>${worker.name}</p>
+            </div>
+            <div class="mt-4 flex justify-between bg-neutral-100 p-2 rounded-sm">
+                <span>Role</span>
+                <p>${worker.role}</p>
+            </div>
+            <div class="mt-4 flex justify-between bg-neutral-100 p-2 rounded-sm">
+                <span>Email</span>
+                <p>${worker.email}</p>
+            </div>
+            <div class="mt-4 flex justify-between bg-neutral-100 p-2 rounded-sm">
+                <span>Phone</span>
+                <p>${worker.phone}</p>
+            </div>
+            <div class="mt-4 flex flex-col justify-between p-2 rounded-sm">
+                <span>Experience</span>
+                ${worker.experiences.map(exp =>{
+                    return `
+                        <div class="pl-4 mb-3 border-l-2 border-gray-300">
+                        <p><strong>Start date:</strong> ${exp.startDate}</p>
+                        <p><strong>End date:</strong> ${exp.endDate}</p>
+                        <p><strong>Company Name:</strong> ${exp.companyName}</p>
+                        <p><strong>Role:</strong> ${exp.experienceRole}</p>
+                    </div>
+                    `
+                })}
+            </div>
+        </div>
+    </section>
+    `;
+    document.body.appendChild(div);
+
+    div.querySelector("#closeDisplayBtn").addEventListener('click', () =>{
+        div.remove()
+    })
+};
