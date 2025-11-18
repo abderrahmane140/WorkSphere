@@ -12,6 +12,7 @@ const image = document.querySelector('#img');
 const email = document.querySelector('#email');
 const phone = document.querySelector('#phone');
 
+
 //errors
 const fullNameError = document.getElementById('fullNameError');
 const roleError = document.getElementById('roleError');
@@ -49,39 +50,14 @@ document.querySelector('#img').addEventListener('input', () => {
 
 //render the experience
 expBtn.addEventListener('click', () => {
-
-    experiences.forEach(expDiv => {
-        if (!expDiv.classList.contains('collapsed')) {
-            const companyName = expDiv.querySelector('.company-name').value || "No Company Name";
-
-            // Save the data on the div before collapsing
-            const expData = {
-                startDate: expDiv.querySelector('.start-date').value,
-                endDate: expDiv.querySelector('.end-date').value,
-                companyName,
-                experienceRole: expDiv.querySelector('.experience-role').value,
-            };
-
-            // Replace inner HTML with collapsed ticket view
-            expDiv.innerHTML = `
-                <span>${companyName}</span>
-                <button type="button" class="removeExpBtn">X</button>
-            `;
-            expDiv.classList.add('collapsed');
-
-            // Save the experience data in the div itself
-            expDiv.dataset.experience = JSON.stringify(expData);
-
-            // Add remove functionality for collapsed ticket
-            expDiv.querySelector('.removeExpBtn').addEventListener('click', (e) => {
-                e.stopPropagation();
-                expDiv.remove();
-                experiences = experiences.filter(exp => exp !== expDiv);
-            });
+    
+    experiences.forEach(e => {
+        if(!e.classList.contains('hidden')){
+            e.classList.add('hidden')
         }
-    });
+    })
 
-    // Create new experience form
+
     const experienceDiv = document.createElement('div');
     experienceDiv.classList.add('experience-item');
     experienceDiv.innerHTML = `
@@ -96,7 +72,7 @@ expBtn.addEventListener('click', () => {
         <button type="button" class="removeExpBtn p-2 bg-red-500 w-full rounded-md text-white font-bold">Remove</button>
     `;
 
-    // Remove experience form
+    // Remove experience form when clicked
     experienceDiv.querySelector('.removeExpBtn').addEventListener('click', (e) => {
         e.stopPropagation();
         experienceDiv.remove();
@@ -106,6 +82,7 @@ expBtn.addEventListener('click', () => {
     experienceContainer.appendChild(experienceDiv);
     experiences.push(experienceDiv);
 });
+
 
 //render the card of the worker top of the button 
 const randerUnassignedStaff = () => {
@@ -137,84 +114,120 @@ function validateEmail(email){
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+//validation for the date
+const validateDates = (startDate, endDate) => {
+
+    if(!startDate || !endDate){
+        return "both start date and end date must be provided."
+    }
+
+    const start = new Date(startDate)
+    const end = new Date(endDate)
+
+
+    if(start >= end){
+        return "start date must be before end date"
+    }
+
+    return null;
+}
+
 const validate = (e) => {
     e.preventDefault();
-    let isValide = true;
+    let isValid = true; 
 
-    //name validation
-    if(fullName.value.trim() == "") {
+    // Validate name
+    if (fullName.value.trim() === "") {
         showError(fullNameError, "Name can't be empty");
-        isValide = false;
-    }else if (fullName.value.length < 8){
+        isValid = false;
+    } else if (fullName.value.length < 8) {
         showError(fullNameError, "Name must be at least 8 characters");
-        isValide = false;
-    }else{
+        isValid = false;
+    } else {
         hideError(fullNameError);
     }
 
-    //role validation
-    if(role.value.trim() == "") {
+    // Validate role
+    if (role.value.trim() === "") {
         showError(roleError, "The Role can't be empty");
-        isValide = false;
-    }else{
-        hideError(role);
+        isValid = false;
+    } else {
+        hideError(roleError);
     }
 
-    //email validation
-    if(email.value.trim() == ""){
+    // Validate email
+    if (email.value.trim() === "") {
         showError(emailError, "Email cannot be empty");
-        isValide = false;
-    }else if(!validateEmail(email.value)){
+        isValid = false;
+    } else if (!validateEmail(email.value)) {
         showError(emailError, "Enter a valid email");
-    }else{
+        isValid = false;
+    } else {
         hideError(emailError);
     }
 
-    //phone validation
-    if(phone.value.trim() == ""){
+    // Validate phone number
+    if (phone.value.trim() === "") {
         showError(phoneError, "Phone number cannot be empty");
-        isValide = false;
-    }else if(!/^[+]?[0-9\s-]{6,15}$/.test(phone.value)){
+        isValid = false;
+    } else if (!/^[+]?[0-9\s-]{6,15}$/.test(phone.value)) {
         showError(phoneError, "Enter a valid number");
-        isValide = false;
-    }else{
+        isValid = false;
+    } else {
         hideError(phoneError);
     }
 
-    if(isValide){
+    // Validate experiences
+    for (const expDiv of experiences) {
+        const startDate = expDiv.querySelector('.start-date').value;
+        const endDate = expDiv.querySelector('.end-date').value;
 
+        const dataError = validateDates(startDate, endDate);
+        if (dataError) {
+            alert(dataError);
+            isValid = false;
+            break; 
+        }
+
+
+        const companyName = expDiv.querySelector('.company-name').value;
+        const experienceRole = expDiv.querySelector('.experience-role').value;
+
+        if (companyName.trim() === "" || experienceRole.trim() === "") {
+            alert("Company name and experience role must be filled out.");
+            isValid = false;
+            break;
+        }
+    }
+
+
+    if (isValid) {
         const newWorker = {
             name: fullName.value,
             role: role.value,
-            image : image.value,
+            image: image.value,
             email: email.value,
             phone: phone.value,
             experiences: []
         };
 
-        experiences.forEach(expDiv => {
+        // Save experiences
+        for(const expDiv of experiences){
+             const startDate = expDiv.querySelector('.start-date').value;
+            const endDate = expDiv.querySelector('.end-date').value;
+            const companyName = expDiv.querySelector('.company-name').value;
+            const experienceRole = expDiv.querySelector('.experience-role').value
 
-            if (expDiv.classList.contains('collapsed')) {
-                const expData = JSON.parse(expDiv.dataset.experience); 
-                newWorker.experiences.push(expData);
-            } else {
-                const startDate = expDiv.querySelector('.start-date').value;
-                const endDate = expDiv.querySelector('.end-date').value;
-                const companyName = expDiv.querySelector('.company-name').value;
-                const experienceRole = expDiv.querySelector('.experience-role').value;
 
-                if(startDate && endDate && companyName && experienceRole){
-                    const expData = { startDate, endDate, companyName, experienceRole };
-                    newWorker.experiences.push(expData);
-                    expDiv.dataset.experience = JSON.stringify(expData); 
-                }
+            if(startDate && endDate && companyName && experienceRole){
+                const expData = {startDate, endDate, companyName, experienceRole}
+                newWorker.experiences.push(expData)
             }
-        });
+        }
+
 
         workers.push(newWorker);
-
         console.log(workers);
-        
         randerUnassignedStaff();
     }
 };
