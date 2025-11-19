@@ -32,12 +32,12 @@ let experiences = [];
 
 //rooms
 const rooms = [
-{id:'conference',name:'Conference Room',capacity:4,allowedRoles:null},
-{id:'reception',name:'Reception',capacity:2,allowedRoles:['Receptionist']},
-{id:'server',name:'Server Room',capacity:2,allowedRoles:['IT Technician']},
-{id:'security',name:'Security Room',capacity:2,allowedRoles:['Security Agent']},
-{id:'staff',name:'Staff Room',capacity:6,allowedRoles:null},
-{id:'archives',name:'Archives Room',capacity:2,allowedRoles:[] }
+    {id:'conference',name:'Conference Room',capacity:4,allowedRoles:null},
+    {id:'reception',name:'Reception',capacity:2,allowedRoles:['Receptionist']},
+    {id:'server',name:'Server Room',capacity:2,allowedRoles:['IT Technician']},
+    {id:'security',name:'Security Room',capacity:2,allowedRoles:['Security Agent']},
+    {id:'staff',name:'Staff Room',capacity:6,allowedRoles:null},
+    {id:'archives',name:'Archives Room',capacity:2,allowedRoles:[] }
 ];
 
 //open the modal
@@ -106,7 +106,7 @@ const randerUnassignedStaff = () => {
         const div = document.createElement('div');
 
         div.innerHTML = `
-        <div class="flex justify-between items-center rounded-md border-1 p-3 mb-4">
+        <div class="flex justify-between items-center rounded-md border-1 p-3 mb-4 unsign-card">
             <span>${Worker.name}</span>
             <img src=${Worker.image} alt="image" class="w-10 h-10 rounded-full">
             <i id="removeUnsingbtn" class="fa-solid fa-xmark cursor-pointer"></i>
@@ -117,10 +117,20 @@ const randerUnassignedStaff = () => {
         div.querySelector('#removeUnsingbtn').addEventListener('click',(e)=>{
             e.stopPropagation()
             div.remove()
+            removeWorkerhandler(Worker.id)
+            console.log(workers)
         })
-        workers.filter(e => e.id != Worker.id)
     });
 };
+
+
+const removeWorkerhandler = (id) => {
+    workerId = Number(id)
+    const index = workers.findIndex(e => e.id == workerId)
+
+    workers.splice(index, 1)
+
+}
 
 //form validation 
 function showError(element, message){
@@ -255,6 +265,7 @@ const validate = (e) => {
         workers.push(newWorker);
         console.log(workers);
         randerUnassignedStaff();
+        closeModel()
     }
 };
 
