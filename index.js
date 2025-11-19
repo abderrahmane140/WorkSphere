@@ -123,6 +123,7 @@ const randerUnassignedStaff = () => {
             e.stopPropagation()
             div.remove()
         })
+        workers.filter(e => e.id != Worker.id)
     });
 };
 
