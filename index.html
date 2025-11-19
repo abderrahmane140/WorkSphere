@@ -70,6 +70,7 @@
     <div class="flex min-h-screen">
 
         <aside class="bg-neutral-100 w-1/4 p-4 flex flex-col">
+            <h3 id="title-UnassignedStaff" class="font-bold mb-4 text-center">Unassigned Staff</h3>
             <div id="UnassignedStaff">
             </div>
             <button class="bg-green-500 p-3 rounded-md text-white mb-6" id="opneBtn">Add New Worker</button>
@@ -78,20 +79,39 @@
 
         <main class="relative bg-[url('/img/workspace.jpg')] bg-center bg-cover min-h-screen w-full">
             <div class="grid grid-cols-[37%_18%_22%_22%] grid-rows-[35%_31%_32.5%] gap-2 absolute top-0 left-0 w-full h-full">
-                   <div class="bg-red-600/60 flex justify-center items-center text-white"><button class="bg-blue-600 w-6 text-2xl cursor-pointer">+</button></div>
+                   <div class="bg-red-600/60 flex justify-center items-center text-white zone" data-zone="conference">
+                        <div class="occupants"></div>
+                        <button class="bg-blue-600 w-6 text-2xl cursor-pointer roomBtn" data-zone="conference">+</button>
+                    </div>
                     <div class=""></div>
-                    <div class="bg-yellow-400/60 flex justify-center items-center text-white"><button class="bg-blue-600 w-6 text-2xl cursor-pointer">+</button></div>
-                    <div class="bg-yellow-400/60 flex justify-center items-center text-white"><button class="bg-blue-600 w-6 text-2xl cursor-pointer">+</button></div>
+                    <div class="bg-yellow-400/60 flex justify-center items-center text-white zone" data-zone="server">
+                        <div class="occupants"></div>
+                        <button class="bg-blue-600 w-6 text-2xl cursor-pointer roomBtn" data-zone="server">+</button>
+                    </div>
+                    
+                    <div class="bg-yellow-400/60 flex justify-center items-center text-white zone" data-zone="security">
+                        <div class="occupants"></div>
+                        <button class="bg-blue-600 w-6 text-2xl cursor-pointer roomBtn" data-zone="security">+</button>
+                    </div>
 
 
-                    <div class="bg-yellow-400/60 row-span-2 flex justify-center items-center text-white" ><button class="bg-blue-600 w-6 text-2xl cursor-pointer">+</button></div>
+                    <div class="bg-yellow-400/60 row-span-2 flex justify-center items-center text-white zone" data-zone="reception">
+                        <div class="occupants"></div>
+                        <button class="bg-blue-600 w-6 text-2xl cursor-pointer roomBtn" data-zone="reception">+</button>
+                    </div>
                     <div class=""></div>
                     <div class="col-span-2"></div>
 
 
                     <div class=""></div>
-                    <div class="bg-yellow-400/60 flex justify-center items-center text-white"><button class="bg-blue-600 w-6 text-2xl cursor-pointer">+</button></div>
-                    <div class="bg-yellow-400/60 flex justify-center items-center text-white"><button class="bg-blue-600 w-6 text-2xl cursor-pointer">+</button></div>
+                    <div class="bg-yellow-400/60 flex justify-center items-center text-white zone" data-zone="staff">
+                        <div class="occupants"></div>
+                        <button class="bg-blue-600 w-6 text-2xl cursor-pointer roomBtn" data-zone="staff">+</button>
+                    </div>
+                    <div class="bg-yellow-400/60 flex justify-center items-center text-white zone" data-zone="archives">
+                        <div class="occupants"></div>
+                        <button class="bg-blue-600 w-6 text-2xl cursor-pointer roomBtn" data-zone="archives">+</button>
+                    </div>
             </div>
 
         </main>

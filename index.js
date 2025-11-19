@@ -5,6 +5,10 @@ const form = document.querySelector('#form');
 
 const workers = [];
 
+
+let id = 0
+
+
 //form data
 const fullName = document.getElementById('fullName');
 const role = document.querySelector('#role');
@@ -24,6 +28,17 @@ const expBtn = document.getElementById('addExp');
 const experienceContainer = document.getElementById('experience');
 
 let experiences = [];
+
+
+//rooms
+const rooms = [
+{id:'conference',name:'Conference Room',capacity:4,allowedRoles:null},
+{id:'reception',name:'Reception',capacity:2,allowedRoles:['Receptionist']},
+{id:'server',name:'Server Room',capacity:2,allowedRoles:['IT Technician']},
+{id:'security',name:'Security Room',capacity:2,allowedRoles:['Security Agent']},
+{id:'staff',name:'Staff Room',capacity:6,allowedRoles:null},
+{id:'archives',name:'Archives Room',capacity:2,allowedRoles:[] }
+];
 
 //open the modal
 const openModel = () => {
@@ -88,17 +103,26 @@ expBtn.addEventListener('click', () => {
 const randerUnassignedStaff = () => {
     const UnassignedStaffContainer = document.getElementById('UnassignedStaff');
     UnassignedStaffContainer.innerHTML = '';  
-    workers.forEach(Worker => {
+    const unsignedworkerOnly = workers.filter(worker => worker.assignedZone == null)
+    // if(unsignedWorkerModel > 0){
+    //     document.querySelector('.title-UnassignedStaff').textContent = 'Unassigned Staff'
+    // }
+    unsignedworkerOnly.forEach(Worker => {
         const div = document.createElement('div');
 
         div.innerHTML = `
         <div class="flex justify-between items-center rounded-md border-1 p-3 mb-4">
             <span>${Worker.name}</span>
             <img src=${Worker.image} alt="image" class="w-10 h-10 rounded-full">
+            <i id="removeUnsingbtn" class="fa-solid fa-xmark cursor-pointer"></i>
         </div>
         `;
         UnassignedStaffContainer.appendChild(div);
         div.addEventListener("click", () => displayWorker(Worker));
+        div.querySelector('#removeUnsingbtn').addEventListener('click',(e)=>{
+            e.stopPropagation()
+            div.remove()
+        })
     });
 };
 
@@ -203,9 +227,11 @@ const validate = (e) => {
         }
     }
 
-
+ 
     if (isValid) {
+        id += 1;
         const newWorker = {
+            id:id,
             name: fullName.value,
             role: role.value,
             image: image.value,
@@ -293,3 +319,132 @@ const displayWorker = (worker) => {
         div.remove()
     })
 };
+
+
+
+//display the unsignedWorker
+
+
+const unsignedWorkerModel = (zoon) => {
+    const div = document.createElement('div')
+    const unsignWor = workers.filter(worker => worker.assignedZone == null)
+    div.innerHTML = `
+    <section class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 displayWorker" >
+        <div class="w-full sm:max-w-md modal-card bg-white rounded-2xl p-6 shadow-2xl mx-4">
+        <div class="flex justify-end">
+        <button id="closeunsingBtn" class="text-slate-400 hover:text-slate-600 text-2xl">&times;</button>
+        </div>
+        ${unsignWor.map(e => {
+            return `
+            <div onclick="addWorkerToRoom('${e.id}', '${zoon}')"  class="flex justify-between items-center rounded-md border-1 p-3 mb-4">
+                <div>
+                    <span>${e.name}</span>
+                    <span class="p-1 rounded-md bg-green-500 text-white">${e.role}</span>
+                </div>
+
+                <img src=${e.image} alt="image" class="w-10 h-10 rounded-full">
+            </div>
+            `
+        })}
+        </div>
+    </section>
+    
+    `
+    
+    document.body.appendChild(div)
+    div.querySelector("#closeunsingBtn").addEventListener('click', () =>{
+        div.remove()
+    })
+}
+
+
+
+const roomBtns = document.querySelectorAll('.roomBtn')
+roomBtns.forEach(roomBtn =>{
+    roomBtn.addEventListener('click', (e)=> {
+        const zoon = e.currentTarget.dataset.zone
+        unsignedWorkerModel(zoon)
+    })
+})
+
+const isRoolAllowed = (role, room) =>{
+    if(role  == 'Manager') return true;
+    if(role == 'Cleaning') return room.id != 'archives'
+    if(Array.isArray(room.allowedRoles)){
+        return room.allowedRoles.length > 0 && room.allowedRoles.includes(role)
+    }
+
+    return true
+}
+
+const addWorkerToRoom =  (id, zoon) =>{
+    const workedId = Number(id)
+    const worker= workers.find(e => e.id == workedId)
+    const room = rooms.find(e => e.id == zoon)
+
+
+    if(!worker || !room) return console.warn('worker or room not found')
+       
+        
+    //check the capacity
+    const occupants =  workers.filter(w => w.assignedZone ==  room.id ).length
+    if(room.capacity <= occupants){
+        alert(`the ${room.name} is Full`)
+        console.log('true')
+        return
+    }
+
+    if(!isRoolAllowed(worker.role, room)){
+        alert(`${worker.role} is not allowed in ${room.name}.`);
+        return
+    }
+
+    worker.assignedZone = zoon
+
+    randerUnassignedStaff()
+
+    const model = document.querySelector('.displayWorker')
+    if(model) model.remove()
+
+
+    renderWorkersInRooms()
+
+}
+
+const renderWorkersInRooms = () =>{
+    rooms.forEach(room => {
+
+        const container = document.querySelector(`.zone[data-zone="${room.id}"] .occupants`)
+        if (!container) return;
+
+
+        container.innerHTML = '';
+
+
+        const assignedWorkers= workers.filter(w => w.assignedZone === room.id)
+        
+        assignedWorkers.forEach(worker =>{
+            const div = document.createElement('div')
+            div.className = 'worker-card flex items-center gap-2 p-1 mb-1 border rounded cursor-pointer'
+            div.innerHTML = `
+             <img src="${worker.image}" alt="${worker.name}" class="w-8 h-8 rounded-full">
+                <span>${worker.name}</span>
+                <i onclick="removeWorkerFrZoon('${worker.id}')" class="fa-solid fa-xmark"></i>
+            `
+
+            //div.addEventListener('click' , () => displayWorker(worker))
+            container.appendChild(div)
+        })
+    })
+
+}
+
+
+//remove the worker from the room
+const removeWorkerFrZoon = (id) => {
+    const workerId = Number(id)
+    const worker = workers.find(e => e.id == workerId)
+    worker.assignedZone = null
+    randerUnassignedStaff()
+    renderWorkersInRooms()
+}
