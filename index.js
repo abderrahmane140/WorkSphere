@@ -66,11 +66,6 @@ document.querySelector('#img').addEventListener('input', () => {
 //render the experience
 expBtn.addEventListener('click', () => {
 
-    experiences.forEach(e => {
-        if(!e.classList.contains('hidden')){
-            e.classList.add('hidden')
-        }
-    })
 
 
     const experienceDiv = document.createElement('div');
