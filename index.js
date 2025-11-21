@@ -6,9 +6,6 @@ const form = document.querySelector('#form');
 const workers = [];
 
 
-let id = 0
-
-
 //form data
 const fullName = document.getElementById('fullName');
 const role = document.querySelector('#role');
@@ -109,11 +106,12 @@ const randerUnassignedStaff = () => {
         const div = document.createElement('div');
 
         div.innerHTML = `
-        <div class="flex justify-between items-center rounded-md border-1 p-3 mb-4 unsign-card">
-            <span>${Worker.name}</span>
-            <img src=${Worker.image} alt="image" class="w-10 h-10 rounded-full">
+        <div class="flex justify-between items-center rounded-md border p-3 mb-4 unsign-card cursor-pointer">
+            <span class="flex-1 truncate">${Worker.name}</span>
+            <img src="${Worker.image}" alt="image" class="w-11 h-11 rounded-full mr-2">
             <i id="removeUnsingbtn" class="fa-solid fa-xmark cursor-pointer"></i>
-        </div>
+            </div>
+
         `;
         UnassignedStaffContainer.appendChild(div);
         div.addEventListener("click", () => displayWorker(Worker));
@@ -239,13 +237,6 @@ const validate = (e) => {
 
  
     if (isValid) {
-        // const makeId = () => {
-        // if (typeof crypto !== 'undefined' && crypto.randomUUID) {
-        //     return crypto.randomUUID();
-        // }
-        
-        // return Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,9);
-        // };
 
         const newWorker = {
             id: Date.now(),
@@ -449,6 +440,7 @@ const renderWorkersInRooms = () =>{
             div.className = 'worker-card flex items-center gap-2 p-1 mb-1 bg-white text-sm text-black rounded cursor-pointer'
             div.innerHTML = `
              <img src="${worker.image}" alt="${worker.name}" class="w-8 h-8 rounded-full">
+
                 <span>${worker.name}</span>
                 <i onclick="removeWorkerFrZoon('${worker.id}')" class="fa-solid fa-xmark bg-red-600 text-white rounded-full p-1"></i>
             `
