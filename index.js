@@ -32,13 +32,17 @@ let experiences = [];
 
 //rooms
 const rooms = [
-    {id:'conference',name:'Conference Room',capacity:4,allowedRoles:null},
-    {id:'reception',name:'Reception',capacity:2,allowedRoles:['Receptionist']},
-    {id:'server',name:'Server Room',capacity:2,allowedRoles:['IT Technician']},
-    {id:'security',name:'Security Room',capacity:2,allowedRoles:['Security Agent']},
-    {id:'staff',name:'Staff Room',capacity:6,allowedRoles:null},
-    {id:'archives',name:'Archives Room',capacity:2,allowedRoles:[] }
+    {id:'conference',name:'Conference Room',capacity:4,allowedRoles:['Manager','Cleaning']},
+    {id:'reception',name:'Reception',capacity:2,allowedRoles:['Receptionist','Manager','Cleaning']},
+    {id:'server',name:'Server Room',capacity:2,allowedRoles:['IT Technician','Manager','Cleaning']},
+    {id:'security',name:'Security Room',capacity:2,allowedRoles:['Security Agent','Manager','Cleaning']},
+    {id:'staff',name:'Staff Room',capacity:6,allowedRoles:['Receptionist','IT Technician','Security Agent','Manager','Cleaning']},
+    {id:'archives',name:'Archives Room',capacity:2,allowedRoles:['Manager'] }
 ];
+
+const saveToLocalStorage = () => {
+    localStorage.setItem('workers', JSON.stringify(workers));
+};
 
 //open the modal
 const openModel = () => {
@@ -116,7 +120,7 @@ const randerUnassignedStaff = () => {
         div.querySelector('#removeUnsingbtn').addEventListener('click',(e)=>{
             e.stopPropagation()
             div.remove()
-            removeWorkerhandler(Worker.id)
+            removeWorkerhandler(Worker.id)  
             console.log(workers)
         })
     });
@@ -128,6 +132,7 @@ const removeWorkerhandler = (id) => {
     const index = workers.findIndex(e => e.id == workerId)
 
     workers.splice(index, 1)
+    saveToLocalStorage()
 
 }
 
@@ -234,9 +239,16 @@ const validate = (e) => {
 
  
     if (isValid) {
-        id += 1;
+        // const makeId = () => {
+        // if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+        //     return crypto.randomUUID();
+        // }
+        
+        // return Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,9);
+        // };
+
         const newWorker = {
-            id:id,
+            id: Date.now(),
             name: fullName.value,
             role: role.value,
             image: image.value,
@@ -245,6 +257,7 @@ const validate = (e) => {
             assignedZone:null,
             experiences: []
         };
+
 
         // Save experiences
         for(const expDiv of experiences){
@@ -264,6 +277,7 @@ const validate = (e) => {
         workers.push(newWorker);
         console.log(workers);
         randerUnassignedStaff();
+        saveToLocalStorage()
         closeModel()
     }
 };
@@ -414,6 +428,7 @@ const addWorkerToRoom =  (id, zoon) => {
 
 
     renderWorkersInRooms()
+    saveToLocalStorage()
 
 }
 
@@ -431,11 +446,11 @@ const renderWorkersInRooms = () =>{
         
         assignedWorkers.forEach(worker =>{
             const div = document.createElement('div')
-            div.className = 'worker-card flex items-center gap-2 p-1 mb-1 border rounded cursor-pointer'
+            div.className = 'worker-card flex items-center gap-2 p-1 mb-1 bg-white text-sm text-black rounded cursor-pointer'
             div.innerHTML = `
              <img src="${worker.image}" alt="${worker.name}" class="w-8 h-8 rounded-full">
                 <span>${worker.name}</span>
-                <i onclick="removeWorkerFrZoon('${worker.id}')" class="fa-solid fa-xmark"></i>
+                <i onclick="removeWorkerFrZoon('${worker.id}')" class="fa-solid fa-xmark bg-red-600 text-white rounded-full p-1"></i>
             `
 
             //div.addEventListener('click' , () => displayWorker(worker))
@@ -453,4 +468,21 @@ const removeWorkerFrZoon = (id) => {
     worker.assignedZone = null
     randerUnassignedStaff()
     renderWorkersInRooms()
+    saveToLocalStorage()
 }
+
+
+// Load workers from localStorage when page loads
+const loadFromLocalStorage = () => {
+    const storedWorkers = localStorage.getItem('workers');
+    if (storedWorkers) {
+        const parsedWorkers = JSON.parse(storedWorkers);
+        workers.push(...parsedWorkers); 
+    }
+    randerUnassignedStaff();
+    renderWorkersInRooms();
+};
+
+
+loadFromLocalStorage();
+
