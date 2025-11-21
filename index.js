@@ -99,9 +99,8 @@ const randerUnassignedStaff = () => {
     const UnassignedStaffContainer = document.getElementById('UnassignedStaff');
     UnassignedStaffContainer.innerHTML = '';  
     const unsignedworkerOnly = workers.filter(worker => worker.assignedZone == null)
-    // if(unsignedWorkerModel > 0){
-    //     document.querySelector('.title-UnassignedStaff').textContent = 'Unassigned Staff'
-    // }
+
+
     unsignedworkerOnly.forEach(Worker => {
         const div = document.createElement('div');
 
@@ -384,8 +383,8 @@ const isRoolAllowed = (role, room) =>{
     return true
 }
 
-const addWorkerToRoom =  (id, zoon) =>{
-    const workedId = Number(id)
+const addWorkerToRoom =  (id, zoon) => {
+    const workedId = Number(id);
     const worker= workers.find(e => e.id == workedId)
     const room = rooms.find(e => e.id == zoon)
 
