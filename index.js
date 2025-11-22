@@ -385,25 +385,39 @@ const unsignedWorkerModel = (zoon) => {
     const div = document.createElement('div')
     const unsignWor = workers.filter(worker => worker.assignedZone == null)
     div.innerHTML = `
-    <section class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 displayWorker" >
-        <div class="w-full sm:max-w-md modal-card bg-white rounded-2xl p-6 shadow-2xl mx-4">
-        <div class="flex justify-end">
-        <button id="closeunsingBtn" class="text-slate-400 hover:text-slate-600 text-2xl">&times;</button>
-        </div>
-        ${unsignWor.map(e => {
-            return `
-            <div onclick="addWorkerToRoom('${e.id}', '${zoon}')"  class="flex justify-between items-center rounded-md border-1 p-3 mb-4">
-                <div>
-                    <span>${e.name}</span>
-                    <span class="p-1 rounded-md bg-green-500 text-white">${e.role}</span>
+        <section class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 displayWorker">
+        <div class="w-full sm:max-w-md mx-4 rounded-2xl bg-white shadow-2xl overflow-hidden">
+            
+            <div class="flex justify-end p-4 border-b">
+            <button id="closeunsingBtn" 
+                    class="text-slate-400 hover:text-slate-600 text-2xl transition"
+                    aria-label="Close unassigned workers">
+                &times;
+            </button>
+            </div>
+
+            <div class="p-4 space-y-3 max-h-[70vh] overflow-y-auto">
+            ${unsignWor && unsignWor.length ?
+                unsignWor.map(e => `
+                <div onclick="addWorkerToRoom('${e.id}', '${zoon}')"
+                    class="flex justify-between items-center rounded-xl border border-gray-200 p-3 shadow-sm hover:shadow-md transition cursor-pointer bg-white">
+                    
+                <div class="flex flex-col">
+                    <span class="font-medium text-gray-800">${e.name}</span>
+                    <span class="mt-1 inline-block px-2 py-1 text-xs font-semibold rounded-md bg-green-500 text-white">
+                    ${e.role}
+                    </span>
                 </div>
 
-                <img src=${e.image} alt="image" class="w-10 h-10 rounded-full">
+                <img src="${e.image}" alt="${e.name}" class="w-12 h-12 rounded-full object-cover border border-gray-200 shadow-sm">
+                </div>
+            `).join('')
+            : `<p>no worker to sing </p>`}
             </div>
-            `
-        })}
+
         </div>
-    </section>
+        </section>
+
     
     `
     
