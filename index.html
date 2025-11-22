@@ -80,12 +80,21 @@
 
     <div class="flex  min-h-screen">
 
-        <aside class="bg-neutral-100 w-1/4 p-4 flex flex-col">
-            <h3 id="title-UnassignedStaff" class="font-bold mb-4 text-center">Unassigned Staff</h3>
-            <div id="UnassignedStaff">
+        <aside class="w-1/4 p-5 flex flex-col border-r shadow-sm bg-neutral-50">
+            <h3 id="title-UnassignedStaff" 
+                class="font-bold mb-6 text-center text-xl text-gray-700">
+                Unassigned Staff
+            </h3>
+
+            <div id="UnassignedStaff" class="space-y-3">
             </div>
-            <button class="bg-green-500 p-3 rounded-md text-white mb-6" id="opneBtn">Add New Worker</button>
+
+            <button id="opneBtn" 
+                    class="mt-6 bg-green-500 p-3 rounded-lg text-white font-semibold shadow hover:bg-green-600 transition cursor-pointer">
+                + Add New Worker
+            </button>
         </aside>
+
 
 
         <main class="relative bg-[url('img/workspace.jpg')] bg-center bg-cover min-h-screen w-full">

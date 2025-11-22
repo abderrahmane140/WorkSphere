@@ -106,12 +106,16 @@ const randerUnassignedStaff = () => {
         const div = document.createElement('div');
 
         div.innerHTML = `
-        <div class="flex justify-between items-center rounded-md border p-3 mb-4 unsign-card cursor-pointer">
-            <span class="flex-1 truncate">${Worker.name}</span>
-            <img src="${Worker.image}" alt="image" class="w-11 h-11 rounded-full mr-2">
-            <i id="removeUnsingbtn" class="fa-solid fa-xmark cursor-pointer"></i>
-            </div>
+                <div class="flex justify-between items-center rounded-xl p-3 mb-4 bg-white shadow-sm hover:shadow-md transition cursor-pointer">
+                    <span class="flex-1 font-medium text-gray-700 truncate">${Worker.name}</span>
 
+                    <img src="${Worker.image}" 
+                        alt="image" 
+                        class="w-11 h-11 rounded-full  object-cover shadow-sm mx-3">
+
+                    <i id="removeUnsingbtn" 
+                    class="fa-solid fa-xmark text-gray-500 hover:text-red-500 text-lg transition cursor-pointer"></i>
+                </div>
         `;
         UnassignedStaffContainer.appendChild(div);
         div.addEventListener("click", () => displayWorker(Worker));
