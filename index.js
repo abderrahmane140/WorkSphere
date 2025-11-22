@@ -496,12 +496,21 @@ const renderWorkersInRooms = () =>{
         
         assignedWorkers.forEach(worker =>{
             const div = document.createElement('div')
-            div.className = 'worker-card flex items-center gap-2 p-1 mb-1 bg-white text-sm text-black rounded cursor-pointer'
+            div.className = 'worker-card flex items-center gap-2 p-1 mb-1 bg-white text-sm text-black rounded-full cursor-pointer'
             div.innerHTML = `
-             <img src="${worker.image}" alt="${worker.name}" class="w-8 h-8 rounded-full">
+                <div class="relative inline-block m-1">
 
-                <span>${worker.name}</span>
-                <i onclick="removeWorkerFrZoon('${worker.id}')" class="fa-solid fa-xmark bg-red-600 text-white rounded-full p-1"></i>
+                <img src="${worker.image}" 
+                    alt="${worker.name}" 
+                    class="w-10 h-10 rounded-full object-cover border-2 border-gray-200 shadow-sm">
+
+
+                <button onclick="removeWorkerFrZoon('${worker.id}')"
+                        class="absolute -top-2 -right-2 w-6 h-6 flex items-center cursor-pointer justify-center bg-red-600 text-white rounded-full shadow hover:bg-red-700 transition"
+                        aria-label="Remove worker">
+                    <i class="fa-solid fa-xmark text-xs"></i>
+                </button>
+                </div>
             `
 
             //div.addEventListener('click' , () => displayWorker(worker))
