@@ -285,48 +285,89 @@ form.addEventListener('submit', validate);
 const displayWorker = (worker) => {
     const div = document.createElement('div')
     div.innerHTML = `  
-    <section class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 displayWorker" >
-        <div class="w-full sm:max-w-md modal-card bg-white rounded-2xl p-6 shadow-2xl mx-4">
-            <div class="flex justify-end">
-                <button id="closeDisplayBtn" class="text-slate-400 hover:text-slate-600 text-2xl">&times;</button>
+    <section
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 displayWorker"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="worker-name"
+    >
+        <div
+            class="w-full  max-w-lg mx-4 rounded-2xl bg-white overflow-hidden shadow-2xl transform transition-all scale-100"
+            role="document"
+        >
+        
+        <div class="relative h-36 sm:h-44 bg-gradient-to-r from-sky-500 to-indigo-600">
+
+        <button
+            id="closeDisplayBtn"
+            class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full flex items-center justify-center bg-white/80 hover:bg-white text-slate-700 cursor-pointer shadow-sm transition"
+            aria-label="Close profile"
+        >
+            &times;
+        </button>
+
+        <!-- Profile avatar -->
+        <div class="absolute left-1/2 transform -translate-x-1/2 bottom-[-44px]">
+            <img
+            src="${worker.image}"
+            alt="${worker.name}"
+            class="w-28 h-28 sm:w-32 sm:h-32 rounded-full border-4 border-white object-cover shadow-lg"
+            />
+        </div>
+        </div>
+
+            <!-- Content -->
+            <div class="pt-14 pb-6 px-6 sm:px-8">
+            <!-- Name + role -->
+            <div class="text-center">
+                <h2 id="worker-name" class="text-lg sm:text-xl font-semibold text-gray-800">
+                ${worker.name}
+                </h2>
+                <p class="mt-1 text-sm text-gray-500">${worker.role || '—'}</p>
             </div>
-            <div class="flex items-center justify-center">
-                <img  
-                class="w-30 h-30 rounded-full" 
-                src="${worker.image}" 
-                alt="${worker.name}">
+
+            <!-- Contact -->
+            <div class="mt-4 grid grid-cols-2 gap-3">
+                <div class="bg-neutral-100 p-3 rounded-lg">
+                    <p class="text-xs text-gray-500">Email</p>
+                    <p class="text-sm text-gray-700 truncate">${worker.email || '—'}</p>
+                </div>
+                <div class="bg-neutral-100 p-3 rounded-lg">
+                    <p class="text-xs text-gray-500">Phone</p>
+                    <p class="text-sm text-gray-700">${worker.phone || '—'}</p>
+                </div>
             </div>
-            <div class="mt-4 flex justify-between bg-neutral-100 p-2 rounded-sm">
-                <span>Name</span>
-                <p>${worker.name}</p>
+
+            <!-- Experience Section -->
+            <div class="mt-6 border-t pt-4">
+                <h3 class="text-sm font-medium text-gray-700 mb-3">Experience</h3>
+
+                <div class="space-y-3">
+                ${
+                    worker.experiences && worker.experiences.length
+                    ? worker.experiences.map(exp => `
+                        <div class="bg-white p-3 rounded-lg shadow-sm border">
+                        <div class="flex justify-between items-start">
+                            <div>
+                            <p class="text-sm font-semibold text-gray-800">${exp.experienceRole || 'Role'}</p>
+                            <p class="text-xs text-gray-500">${exp.companyName || 'Company'}</p>
+                            </div>
+                            <div class="text-right text-xs text-gray-500">
+                            <p>${exp.startDate || '—'}</p>
+                            <p>${exp.endDate || 'Present'}</p>
+                            </div>
+                        </div>
+                        </div>
+                    `).join('')
+                    : `<p class="text-sm text-gray-500">No experience listed.</p>`
+                }
+                </div>
             </div>
-            <div class="mt-4 flex justify-between bg-neutral-100 p-2 rounded-sm">
-                <span>Role</span>
-                <p>${worker.role}</p>
-            </div>
-            <div class="mt-4 flex justify-between bg-neutral-100 p-2 rounded-sm">
-                <span>Email</span>
-                <p>${worker.email}</p>
-            </div>
-            <div class="mt-4 flex justify-between bg-neutral-100 p-2 rounded-sm">
-                <span>Phone</span>
-                <p>${worker.phone}</p>
-            </div>
-            <div class="mt-4 flex flex-col justify-between p-2 rounded-sm">
-                <span>Experience</span>
-                ${worker.experiences.map(exp =>{
-                    return `
-                        <div class="pl-4 mb-3 border-l-2 border-gray-300">
-                        <p><strong>Start date:</strong> ${exp.startDate}</p>
-                        <p><strong>End date:</strong> ${exp.endDate}</p>
-                        <p><strong>Company Name:</strong> ${exp.companyName}</p>
-                        <p><strong>Role:</strong> ${exp.experienceRole}</p>
-                    </div>
-                    `
-                })}
             </div>
         </div>
-    </section>
+        </section>
+
+
     `;
     document.body.appendChild(div);
 
